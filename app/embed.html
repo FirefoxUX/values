@@ -319,5 +319,26 @@
         <!-- build:js({app,.tmp}) scripts/main.js -->
         <script src="scripts/main.js"></script>
         <!-- endbuild -->
+
+        <script>
+          // Get height of document
+          function getDocHeight(doc) {
+              doc = doc || document;
+              // from http://stackoverflow.com/questions/1145850/get-height-of-entire-document-with-javascript
+              var body = doc.body, html = doc.documentElement;
+              var height = Math.max( body.scrollHeight, body.offsetHeight,
+                  html.clientHeight, html.scrollHeight, html.offsetHeight );
+              return height;
+          }
+
+          // send docHeight onload
+          function sendDocHeightMsg(e) {
+              var ht = getDocHeight();
+              parent.postMessage( JSON.stringify( {'type': 'editor-height', 'docHeight': ht} ), '*' );
+          }
+
+          // assign onload handler
+          window.addEventListener('load', sendDocHeightMsg, false);
+        </script>
 </body>
 </html>
